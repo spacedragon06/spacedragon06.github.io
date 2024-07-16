@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Honk&display=swap" rel="stylesheet">
+<link rel="stylesheet" type="" href="./style.css">
+    <title>Grass clicker</title>
+    <style>
+      div {
+        font-family: Honk;
+        font-size: xxx-large;
+        text-align: center;
+      }
+      button {
+        border-radius: 0px;
+        color: green;
+      }
+      body {
+        
+      }
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #shop {
+        display: flex;
+        flex-direction: column;
+        align-items: space-between;
+        justify-content: center;
+        margin: 50px;
+      }
+      #grass {
+        margin: 50px;
+      }
+    </style>
+    <script>
+  let grass = 0;
+      let lawnMultiplier = 0;
+      let grassFields = 0;
+      let grassFieldAmount = 20;
+      window.onload = function() {
+      scoreTxt = document.createElement("div");
+      scoreTxt.style=""  
+        document.body.append(scoreTxt);
+      scoreTxt.innerHTML = grass};
+      function touchGrass() {
+        grass=grass+1;
+        scoreTxt.innerHTML = grass;
+      }
+      function buyLawnMower() {
+        if (grass < 100) {
+          window.alert("not enough grass")
+        } else {
+          grass=grass - 100
+          lawnMultiplier=lawnMultiplier+5;
+        }
+        }
+      function buyGrassField() {
+        if (grass < 1100) {
+          window.alert("not enough grass")
+        } else {
+          grass=grass - 1100;
+          grassFields=grassFields+1;
+        }
+      }
+      function buyCloudSeeder() {
+        if (grass < 4000) {
+          window.alert("not enough grass")
+        } else {
+          grass=grass - 4000
+          grassFieldAmount=grassFieldAmount+2;
+        }
+
+      }
+      setInterval(function() {
+        grass=grass+lawnMultiplier;
+        grass=grass+grassFields*grassFieldAmount;
+        scoreTxt.innerHTML = grass;
+      },1000);
+    </script>
+  </head>
+  <body style="background-image: url(https://art.thiojoe.com/wallpaper/bliss-neue/Bliss+Neue+-+4K.jpg);background-size: 100% 100%;background-repeat: no-repeat;width: 100vw;height: 100vh;margin: 0px;">
+    <div id="container">
+        <button  type="" onClick="touchGrass()"><img src="./grass.webp" alt="Grass." width="360px" height="360px" ></button> 
+        <div id="shop" style="display: flex;flex-direction: column;margin: 50px;font-family: Honk;font-size: xxx-large;">
+          shop
+        <button type="" id="lawnmower" onClick="buyLawnMower()">Lawnmower<br><sub>5 grass per second | price 100</sub></button>
+        <button type="" id="grassfield" onClick="buyGrassField">Grass field <br><sub>20 grass per second | price 1100</sub></button>
+        <button type="" id="cloudseeder" onClick="buyCloudSeeder">Cloud seeder <br><sub>increase grass produced by Grass field | price 4000</sub></button>
+        </div>
+    </div>
+    <footer>
+      <img src="" alt="">
+    </footer>
+  </body>
+</html>

@@ -44,7 +44,7 @@
       let grassFieldAmount = 20;
       window.onload = function() {
       scoreTxt = document.createElement("div");
-      scoreTxt.style=""  
+      scoreTxt.style="";
         document.body.append(scoreTxt);
       scoreTxt.innerHTML = grass};
       function touchGrass() {
@@ -55,7 +55,7 @@
         if (grass < 100) {
           window.alert("not enough grass")
         } else {
-          grass=grass - 100
+          grass=grass - 100;
           lawnMultiplier=lawnMultiplier+5;
         }
         }
@@ -71,7 +71,7 @@
         if (grass < 4000) {
           window.alert("not enough grass")
         } else {
-          grass=grass - 4000
+          grass=grass - 4000;
           grassFieldAmount=grassFieldAmount+2;
         }
 

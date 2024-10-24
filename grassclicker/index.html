@@ -66,6 +66,69 @@
                 color: #3c4043;
                 margin: 1px;
             }
+            #navbar {
+                display: flex;
+            }
+            .navbarBtn {
+                background-color: var(--green-tint);
+                color: black;
+                padding: 10px;
+            }
+            .itemContainer {
+                display: flex;
+            }
+            .textDiv {
+                font-size: xxx-large;
+                background-color: var(--green-tint);
+                border-radius: 12px;
+                border: var(--green-tint);
+                color: #3c4043;
+                flex: 1 1 0%;
+                width: 84px;
+            }
+            .shopBtn {
+                width: 182px;
+            }
+            .dropbtn {
+                background-color: #04aa6d;
+                color: white;
+                padding: 16px;
+                font-size: 16px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                right: 0;
+                background-color: #f9f9f9;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+            }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            .dropdown:hover .dropbtn {
+                background-color: #3e8e41;
+            }
         </style>
         <script>
             let grass = 0;
@@ -96,8 +159,13 @@
                 } else {
                     grass = grass - 100;
                     lawnMultiplier = lawnMultiplier + 5;
+                    updateLawnMower();
                     refreshGrass();
                 }
+            }
+            function updateLawnMower() {
+                document.getElementById("lawnmoweramount").innerHTML =
+                    lawnMultiplier / 5;
             }
             function buyGrassField() {
                 if (grass < 1100) {
@@ -105,8 +173,13 @@
                 } else {
                     grass = grass - 1100;
                     grassFields = grassFields + 1;
+                    updateGrassField();
                     refreshGrass();
                 }
+            }
+            function updateGrassField() {
+                document.getElementById("grassfieldamount").innerHTML =
+                    grassFields;
             }
             function buyCloudSeeder() {
                 if (grass < 4000) {
@@ -123,8 +196,13 @@
                 } else {
                     grass = grass - 10000;
                     grassFarms = grassFarms + 1;
+                    updateGrassFarm();
                     refreshGrass();
                 }
+            }
+            function updateGrassFarm() {
+                document.getElementById("grassfarmamount").innerHTML =
+                    grassFarms;
             }
             function buyGrassFarm() {
                 if (grass < 100000) {
@@ -182,6 +260,40 @@
                         "row";
                 }
             }
+            function saveAll() {
+                localStorage.setItem("grass", grass);
+                localStorage.setItem("lawnMultiplier", lawnMultiplier);
+                localStorage.setItem("grassFields", grassFields);
+                localStorage.setItem("grassFarms", grassFarms);
+                localStorage.setItem("grassFieldAmount", grassFieldAmount);
+                localStorage.setItem("grassFarmAmount", grassFarmAmount);
+                localStorage.setItem(
+                    "artificialIslandSpawned",
+                    artificialIslandSpawned,
+                );
+            }
+            function loadAll() {
+                grass = Number(localStorage.getItem("grass"));
+                lawnMultiplier = Number(localStorage.getItem("lawnMultiplier"));
+                grassFields = Number(localStorage.getItem("grassFields"));
+                grassFarms = Number(localStorage.getItem("grassFarms"));
+                grassFieldAmount = Number(
+                    localStorage.getItem("grassFieldAmount"),
+                );
+                grassFarmAmount = Number(
+                    localStorage.getItem("grassFarmAmount"),
+                );
+                artificialIslandSpawned = localStorage.getItem(
+                    "artificialIslandSpawned",
+                );
+                updateLawnMower();
+                updateGrassField();
+                updateGrassFarm();
+                refreshGrass();
+            }
+            function resetSave() {
+                localStorage.clear();
+            }
         </script>
     </head>
     <body
@@ -197,6 +309,18 @@
             margin: 0px;
         "
     >
+        <div id="navbar">
+            <div id="save">
+                <button class="navbarBtn" id="savebtn" onclick="saveAll();">
+                    Save 💾
+                </button>
+            </div>
+            <div id="load">
+                <button class="navbarBtn" id="loadbtn" onclick="loadAll();">
+                    Load ⬇
+                </button>
+            </div>
+        </div>
         <div id="outerContainer">
             <div id="container">
                 <button type="" onClick="touchGrass()">
@@ -218,25 +342,48 @@
                     "
                 >
                     <div id="shopTxt">Shop</div>
-                    <button type="" id="lawnmower" onClick="buyLawnMower()">
-                        Lawnmower<br /><sub>5 grass per second | price 100</sub>
-                    </button>
-                    <button type="" id="grassfield" onClick="buyGrassField()">
-                        Grass field <br /><sub
-                            >20 grass per second | price 1100</sub
+                    <div class="itemContainer">
+                        <button
+                            class="shopBtn"
+                            id="lawnmower"
+                            onClick="buyLawnMower()"
                         >
-                    </button>
+                            Lawnmower<br /><sub
+                                >5 grass per second | price 100</sub
+                            >
+                        </button>
+                        <div class="textDiv" id="lawnmoweramount">0</div>
+                    </div>
+                    <div class="itemContainer">
+                        <button
+                            class="shopBtn"
+                            id="grassfield"
+                            onClick="buyGrassField()"
+                        >
+                            Grass field <br /><sub
+                                >20 grass per second | price 1100</sub
+                            >
+                        </button>
+                        <div class="textDiv" id="grassfieldamount">0</div>
+                    </div>
                     <button type="" id="cloudseeder" onClick="buyCloudSeeder()">
                         Cloud seeder <br /><sub
-                            >increase grass produced by Grass field | price
+                            >increases grass produced by Grass field | price
                             4000</sub
                         >
                     </button>
-                    <button type="" id="grassfarm" onClick="buyGrassFarm()">
-                        Grass Farm<br /><sub
-                            >100 grass per second | price 10000</sub
+                    <div class="itemContainer">
+                        <button
+                            class="shopBtn"
+                            id="grassfarm"
+                            onClick="buyGrassFarm()"
                         >
-                    </button>
+                            Grass Farm<br /><sub
+                                >100 grass per second | price 10000</sub
+                            >
+                        </button>
+                        <div class="textDiv" id="grassfarmamount">0</div>
+                    </div>
                 </div>
             </div>
         </div>

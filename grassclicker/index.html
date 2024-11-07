@@ -158,14 +158,14 @@
                     window.alert("not enough grass");
                 } else {
                     grass = grass - 100;
-                    lawnMultiplier = lawnMultiplier + 5;
+                    lawnMultiplier = lawnMultiplier + 1;
                     updateLawnMower();
                     refreshGrass();
                 }
             }
             function updateLawnMower() {
                 document.getElementById("lawnmoweramount").innerHTML =
-                    lawnMultiplier / 5;
+                    lawnMultiplier;
             }
             function buyGrassField() {
                 if (grass < 1100) {
@@ -349,7 +349,7 @@
                             onClick="buyLawnMower()"
                         >
                             Lawnmower<br /><sub
-                                >5 grass per second | price 100</sub
+                                >1 grass per second | price 100</sub
                             >
                         </button>
                         <div class="textDiv" id="lawnmoweramount">0</div>

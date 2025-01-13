@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Communicatie in de Digitale Eeuw</title>
+        <style>
+            body {
+                font-family: "Arial";
+                margin: 0px;
+            }
+            p {
+                width: 580px;
+            }
+            h1 {
+                text-align: center;
+                margin: 21px;
+            }
+            h3 {
+                align-self: flex-start;
+                margin: 4px;
+            }
+            h6 {
+                //align-self: flex-start;
+                margin: 8px;
+            }
+            figure {
+                align-self: flex-start;
+                margin-left: 16px;
+                margin-right: 16px;
+            }
+            figcaption {
+                font-family: "Times New Roman";
+                margin: 8px;
+            }
+            footer {
+                background-color: #eee;
+                border-top-width: 1px;
+                border-left-width: 0px;
+                border-right-width: 0px;
+                border-bottom-width: 0px;
+                height: 96px;
+                padding: 16px;
+                border-color: #303030;
+                border-style: solid;
+            }
+            #banner {
+                max-width: 800px;
+                border-radius: 12px;
+                margin: 8px;
+            }
+            #communicatie {
+                width: 300px;
+                height: 150px;
+                align-self: flex-start;
+            }
+            #main {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                width: 580px;
+            }
+            #container {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+            }
+            .container {
+                border: 2px solid;
+                border-radius: 6px;
+                background-color: #eee;
+            }
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    </head>
+    <body>
+        <div id="container">
+            <image
+                id="banner"
+                class="container"
+                src="https://cdn.maxvandaag.nl/2024/06/google-maps-shutterstock_2384621063-1200x667-1.jpg"
+            ></image>
+
+            <div id="titel" class="container">
+                <h1>Communicatie in de Digitale Eeuw</h1>
+                <h6>door Oleg en Jay</h6>
+            </div>
+            <div id="main">
+                <p id="inleiding">
+                    <strong>
+                        Ooit moest je iemand in het echt ontmoeten om met iemand
+                        te communiceren. Vroeger had je een telefoon per huis en
+                        die was duur om te gebruiken. maar nu is alles anders:
+                        tegenwoordig kan je wanneer je wilt iemand bellen, appen
+                        of videobellen.
+                    </strong>
+                </p>
+                <p>
+                    Deze generatie is een van de eerste generaties die opgroeit
+                    in een wereld waar je alles op het internet kan vinden. Door
+                    het internet zijn veel sociale media ontstaan. en daardoor
+                    kan je denken dat de wereld nu meer sociaal is dan ooit,
+                    maar toch blijkt het dat jongeren minder sociale
+                    vaardigheden hebben.
+                </p>
+                <h3>De Oorzaak</h3>
+                <p id="oorzaak">
+                    Het probleem is dat jongeren minder met elkaar communiceren
+                    in het echt en meer chatten. daardoor wordt er minder
+                    non-verbale communicatie gebruikt. maar zoals je ziet in
+                    figuur 1, zie je dat meer dan 80% van communicatie is
+                    non-verbale communicatie. Dus als je iemand een berichtje
+                    stuurt, geeft iemand je minder informatie dan als je met
+                    iemand in het echt praat.
+                    <figure class="container">
+                        <canvas id="communicatie" context="2d"></canvas>
+                        <figcaption>figuur 1</figcaption>
+                    </figure>
+                </p>
+                <h3>De Oplossing</h3>
+                <p id="oplossing">
+                    Maar er zijn ook alternatieven voor chatten die zorgen voor
+                    minder verwarring, zoals: voicemail, bellen en videobellen.
+                    Videobellen is het meest net zoals het echt: je kan iemand's
+                    gebarentaal zien en de stem van diegene horen. je kan
+                    natuurlijk ook gewoon in het echt met mensen praten.
+                    Hierdoor krijg je ook meer sociale vaardigheden, waardoor je
+                    meer durft te videobellen. Dus wij zeggen: Ga meer met
+                    mensen in het echt praten en videobellen. Maar het is
+                    natuurlijk wel uw keuze.
+                </p>
+            </div>
+        </div>
+        <!--<footer><h4></h4></footer>--->
+        <script>
+            const xValues = ["Non-Verbaal", "Verbaal"];
+            const yValues = [80, 20];
+            const barColors = ["blue", "green"];
+
+            const chart = new Chart("communicatie", {
+                type: "pie",
+                data: {
+                    labels: xValues,
+                    datasets: [
+                        {
+                            backgroundColor: barColors,
+                            data: yValues,
+                        },
+                    ],
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "informatie gehaald uit communicatie",
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>

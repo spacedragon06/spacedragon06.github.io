@@ -5,43 +5,68 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="stylesheet" type="" href="./index.css" />
+        <link rel="stylesheet" href="./css/dark.css">
+        <link rel="stylesheet" href="./css/light.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL@20..48,100..700,0..1"  rel="stylesheet">
+    </head>
+    <link rel="icon" type="image/webp" href="grass.webp" />
+        <title>Grass clicker</title>
+        <script>window.addEventListener("DOMContentLoaded",function() {
+          script = document.createElement("script")
+          script.type = "text/javascript";
+          script.src = "js/index.js"
+          document.head.appendChild(script)
+        })</script>
+        <script type="text/javascript" src="js/gamepad.js"></script>
         <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
             rel="stylesheet"
         />
-        <link rel="stylesheet" type="" href="./index.css" />
-        <link rel="icon" type="image/webp" href="grass.webp" />
-        <title>Grass clicker</title>
-        <script src="index.js"></script>
+        <script type="importmap">
+            {
+                "imports": {
+                    "@material/web/": "https://esm.run/@material/web/"
+                }
+            }
+        </script>
+        <script type="module">
+            import "@material/web/all.js";
+            import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+
+            document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+        </script>
+        <script type="module">
+          // This example uses anchor as an ID reference
+          const anchorEl = document.body.querySelector('#settings-anchor');
+          const menuEl = document.body.querySelector('#settings-menu');
+
+          anchorEl.addEventListener('click', () => { menuEl.open = !menuEl.open; });
+        </script>
     </head>
-    <body
-        style="
-            background: linear-gradient(
-                0deg,
-                rgba(73, 199, 84, 1) 13%,
-                rgba(18, 180, 171, 1) 30%,
-                rgba(0, 110, 255, 1) 100%
-            );
-            width: 100vw;
-            height: 100vh;
-            margin: 0px;
-        "
-    >
+    <body class="light">
         <div id="navbar">
-            <div id="save">
-                <button class="navbarBtn" id="savebtn" onclick="saveAll();">
-                    Save 💾
-                </button>
-            </div>
-            <div id="load">
-                <button class="navbarBtn" id="loadbtn" onclick="loadAll();">
-                    Load ⬇
-                </button>
-            </div>
+            <span style="position: relative;width: 48px;height: 48px;">
+              <md-filled-icon-button id="settings-anchor"><md-icon class="rounded">settings</md-icon></md-filled-icon-button>
+              <md-menu id="settings-menu" anchor="settings-anchor">
+                <md-menu-item>
+                    <div slot="headline">Dark mode</div>
+                    <md-switch icons slot="start" id="darkmode"></md-switch>
+                </md-menu-item>
+                <md-menu-item>
+                  <div slot="headline" onclick="saveAll();">Save</div>
+                  <md-icon slot="start" >save</md-icon>
+                </md-menu-item>
+                <md-menu-item>
+                  <div slot="headline" onclick="loaAll();">Load</div>
+                  <md-icon slot="start">download</md-icon>
+                </md-menu-item>
+              </md-menu>
+            </span>
         </div>
         <div id="outerContainer">
             <div id="container">
-                <button type="" onClick="touchGrass()">
+                <button type="" onClick="touchGrass()" id="grass">
                     <img
                         src="./grass.webp"
                         alt="Grass."
@@ -49,60 +74,12 @@
                         height="360px"
                     />
                 </button>
-                <div
-                    id="shop"
-                    style="
-                        display: flex;
-                        flex-direction: column;
-                        margin: 25px;
-                        font-family: inherit;
-                        font-size: xxx-large;
-                    "
-                >
-                    <div id="shopTxt">Shop</div>
-                    <div class="itemContainer">
-                        <button
-                            class="shopBtn"
-                            id="lawnmower"
-                            onClick="buyLawnMower()"
-                        >
-                            Lawnmower<br /><sub
-                                >1 grass per second | price 100</sub
-                            >
-                        </button>
-                        <div class="textDiv" id="lawnmoweramount">0</div>
-                    </div>
-                    <div class="itemContainer">
-                        <button
-                            class="shopBtn"
-                            id="grassfield"
-                            onClick="buyGrassField()"
-                        >
-                            Grass field <br /><sub
-                                >20 grass per second | price 1100</sub
-                            >
-                        </button>
-                        <div class="textDiv" id="grassfieldamount">0</div>
-                    </div>
-                    <button type="" id="cloudseeder" onClick="buyCloudSeeder()">
-                        Cloud seeder <br /><sub
-                            >increases grass produced by Grass field | price
-                            4000</sub
-                        >
-                    </button>
-                    <div class="itemContainer">
-                        <button
-                            class="shopBtn"
-                            id="grassfarm"
-                            onClick="buyGrassFarm()"
-                        >
-                            Grass Farm<br /><sub
-                                >100 grass per second | price 10000</sub
-                            >
-                        </button>
-                        <div class="textDiv" id="grassfarmamount">0</div>
-                    </div>
-                </div>
+                <md-list
+                    id="shop">
+                    <md-list-item id="shopTxt"><div slot="headline">Shop</div><md-icon slot="start">store</md-icon></md-list-item>
+                    <md-divider></md-divider>
+
+                </md-list>
             </div>
         </div>
         <footer>

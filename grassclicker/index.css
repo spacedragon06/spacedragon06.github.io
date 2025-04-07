@@ -1,5 +1,18 @@
+@import url("css/light.css");
 :root {
     --green-tint: #f0fff0;
+}
+body {
+    /*background: linear-gradient(
+        0deg,
+        rgba(73, 199, 84, 1) 13%,
+        rgba(18, 180, 171, 1) 30%,
+        rgba(0, 110, 255, 1) 100%
+    );
+    background-color: rgba(73, 199, 84, 1);*/
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
 }
 div {
     text-align: center;
@@ -7,11 +20,15 @@ div {
 button {
     border-radius: 12px;
     color: green;
-    background-color: var(--green-tint);
-    border: var(--green-tint);
+    background-color: #fff;
+    border: #fff;
     font-family: "Roboto", Arial, sans-serif;
     font-weight: 500;
     margin: 1px;
+}
+md-icon {
+    --md-icon-size: 24px;
+    font-family: "Material Symbols Rounded";
 }
 * {
     font-family: "Roboto", Arial, sans-serif;
@@ -32,27 +49,38 @@ button {
     align-items: space-between;
     justify-content: center;
     margin: 25px;
+    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+    margin: 25px;
+    font-family: inherit;
+    border-radius: 20px;
 }
 #grass {
     margin: 25px;
+    background-color: var(--md-sys-color-surface);
+    border: var(--md-sys-color-outline);
 }
 #score {
     font-size: xxx-large;
-    background-color: var(--green-tint);
+    background-color: var(--md-sys-color-surface);
     border-radius: 12px;
-    border: var(--green-tint);
-    color: #3c4043;
+    border: var(--md-sys-color-outline);
+    color: var(--md-sys-color-on-surface);
     margin: 1px;
 }
 #shopTxt {
-    background-color: var(--green-tint);
     border-radius: 12px;
-    border: var(--green-tint);
     color: #3c4043;
     margin: 1px;
+    font-size: xx-large;
 }
 #navbar {
     display: flex;
+    margin: 2px;
+}
+.rounded {
+    font-family: "Material Symbols Rounded";
 }
 .navbarBtn {
     background-color: var(--green-tint);

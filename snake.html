@@ -1,127 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="images/ksnakeduel.svg" type="image/svg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images/ksnakeduel.svg" type="image/svg" />
     <title>snake game</title>
-    <style>#gameContainer{
+    <style>
+      #gameContainer {
         display: flex;
         justify-content: space-between;
-    }
-    #gameBoard{
+      }
+      #gameBoard {
         border: 3px solid;
         display: flex;
         flex-direction: column;
         justify-content: right;
-    }
-    #uiContainer {
+      }
+      #uiContainer {
         display: flex;
         flex-direction: column;
         justify-content: left;
-    }
-    #scoreText{
-        font-family: 'ubuntu mono', monospace;
+      }
+      #scoreText {
+        font-family: "ubuntu mono", monospace;
         font-size: 100px;
-    }
-    #reset{
-        font-family: 'ubuntu mono', monospace;
+      }
+      #reset {
+        font-family: "ubuntu mono", monospace;
         font-size: 22px;
         width: 100px;
         height: 50px;
         border: 4px solid;
         border-radius: 15px;
         cursor: pointer;
-    }</style>
-</head>
-<body style="display: inline-block;">
-    
-    
+      }
+    </style>
+  </head>
+  <body style="display: inline-block">
     <div id="gameContainer">
-        <div id="uiContainer">
-        <h1 style="vertical-align: text-top;">snake game</h1>
-        <button id="reset" style="vertical-align: bottom;">reset</button>
-        <br>
-        <div id="scoreText" style="vertical-align: bottom;"> 0</div></div>
+      <div id="uiContainer">
+        <h1 style="vertical-align: text-top">snake game</h1>
+        <button id="reset" style="vertical-align: bottom">reset</button>
+        <br />
+        <div id="scoreText" style="vertical-align: bottom">0</div>
         <canvas id="gameBoard" width="500" height="500"></canvas>
-        </div>
-        
+      </div>
     </div>
-    <script>const gameBoard = document.querySelector("#gameBoard");
-        const ctx = gameBoard.getContext("2d");
-        const scoreText = document.querySelector("#scoreText");
-        const reset = document.querySelector("#reset");
-        const gameWidth = gameBoard.width;
-        const gameHeight = gameBoard.height;
-        const boardBackground = "white";
-        const snekColor = "cyan";
-        const snekBorder = "black";
-        const foodColor = "red";
-        const unitSize = 25;
-        let running = false;
-        let xVelocity = unitSize;
-        let yVelocity = 0;
-        let foodX;
-        let foodY;
-        let score = 0;
-        let snek = [
-            {x:unitSize * 4, y:0},
-            {x:unitSize * 3, y:0},
-            {x:unitSize * 2, y:0},
-            {x:unitSize, y:0},
-            {x:0, y:0}
-        ]
-        window.addEventListener("keydown", changeDirection);
-        reset.addEventListener("click", resetGame);
-        
-        gameStart();
-        
-        function gameStart(){running = true; scoreText.textContent = score; createFood(); drawFood(); nextTick();};
-        function nextTick(){if(running){setTimeout(()=>{ clearBoard(); drawFood(); moveSnek(); drawSnek(); checkGameOver(); nextTick();}, 75)}else{displayGameOver();}};
-        function clearBoard(){ctx.fillStyle = boardBackground; ctx.fillRect(0, 0, gameWidth, gameHeight);};
-        function createFood(){function randomFood(min, max){ const randNum = Math.round((Math.random() * (max - min) + min) / unitSize) * unitSize; return randNum;}foodX = randomFood(0, gameWidth - unitSize); console.log(foodX);foodY = randomFood(0, gameWidth - unitSize); console.log(foodY);}
-        function drawFood(){ctx.fillStyle = foodColor; ctx.fillRect(foodX, foodY, unitSize, unitSize);};
-        function moveSnek(){const head = {x: snek[0].x + xVelocity, y: snek[0].y + yVelocity};snek.unshift(head);if(snek[0].x == foodX && snek[0].y == foodY){score+=1; scoreText.textContent = score; createFood();}else{snek.pop();};};
-        function drawSnek(){ctx.fillStyle = snekColor; ctx.strokeStyle = snekBorder; snek.forEach(snekPart => {ctx.fillRect(snekPart.x, snekPart.y, unitSize, unitSize);ctx.strokeRect(snekPart.x, snekPart.y, unitSize, unitSize);}) };
-        function changeDirection(event){const keyPressed = event.keyCode; const LEFT = 37; const RIGHT = 39; const UP = 38; const DOWN = 40; const goingUP = (yVelocity == -unitSize);const goingDOWN = (yVelocity == unitSize);const goingRIGHT = (xVelocity == unitSize);const goingLEFT = (xVelocity == -unitSize);switch(true){case(keyPressed == LEFT && !goingRIGHT):xVelocity = -unitSize;yVelocity = 0;break;case(keyPressed == UP && !goingDOWN):xVelocity = 0;yVelocity = -unitSize;break;case(keyPressed == RIGHT && !goingLEFT):xVelocity = unitSize;yVelocity = 0;break;case(keyPressed == DOWN && !goingUP):xVelocity = 0;yVelocity = unitSize;break;}};
-        function checkGameOver(){
-            switch(true){
-                case(snek[0].x < 0):
-                running = false;
-                break;
-                case(snek[0].x >= gameWidth):
-                running = false;
-                break;
-                case(snek[0].y < 0):
-                running = false;
-                break;
-                case(snek[0].y >= gameWidth):
-                running = false;
-                break;
-            }
-            for(let i = 1; i < snek.length; i+=1){
-                if(snek[i].x == snek[0].x && snek[i].y == snek[0].y){running = false;}
-            }
-        };
-        function displayGameOver(){
-            ctx.font = "50px MV Boli";
-            ctx.fillStyle = "black";
-            ctx.textAlign = "center";
-            ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
-            running = false;
-        };
-        function resetGame(){
-            score = 0;
+    <script>
+      const gameBoard = document.querySelector("#gameBoard");
+      const ctx = gameBoard.getContext("2d");
+      const scoreText = document.querySelector("#scoreText");
+      const reset = document.querySelector("#reset");
+      const gameWidth = gameBoard.width;
+      const gameHeight = gameBoard.height;
+      const boardBackground = "white";
+      const snekColor = "cyan";
+      const snekBorder = "black";
+      const foodColor = "red";
+      const unitSize = 25;
+      let running = false;
+      let xVelocity = unitSize;
+      let yVelocity = 0;
+      let foodX;
+      let foodY;
+      let score = 0;
+      let snek = [
+        { x: unitSize * 4, y: 0 },
+        { x: unitSize * 3, y: 0 },
+        { x: unitSize * 2, y: 0 },
+        { x: unitSize, y: 0 },
+        { x: 0, y: 0 },
+      ];
+      window.addEventListener("keydown", changeDirection);
+      reset.addEventListener("click", resetGame);
+
+      gameStart();
+
+      function gameStart() {
+        running = true;
+        scoreText.textContent = score;
+        createFood();
+        drawFood();
+        nextTick();
+      }
+      function nextTick() {
+        if (running) {
+          setTimeout(() => {
+            clearBoard();
+            drawFood();
+            moveSnek();
+            drawSnek();
+            checkGameOver();
+            nextTick();
+          }, 75);
+        } else {
+          displayGameOver();
+        }
+      }
+      function clearBoard() {
+        ctx.fillStyle = boardBackground;
+        ctx.fillRect(0, 0, gameWidth, gameHeight);
+      }
+      function createFood() {
+        function randomFood(min, max) {
+          const randNum =
+            Math.round((Math.random() * (max - min) + min) / unitSize) *
+            unitSize;
+          return randNum;
+        }
+        foodX = randomFood(0, gameWidth - unitSize);
+        console.log(foodX);
+        foodY = randomFood(0, gameWidth - unitSize);
+        console.log(foodY);
+      }
+      function drawFood() {
+        ctx.fillStyle = foodColor;
+        ctx.fillRect(foodX, foodY, unitSize, unitSize);
+      }
+      function moveSnek() {
+        const head = { x: snek[0].x + xVelocity, y: snek[0].y + yVelocity };
+        snek.unshift(head);
+        if (snek[0].x == foodX && snek[0].y == foodY) {
+          score += 1;
+          scoreText.textContent = score;
+          createFood();
+        } else {
+          snek.pop();
+        }
+      }
+      function drawSnek() {
+        ctx.fillStyle = snekColor;
+        ctx.strokeStyle = snekBorder;
+        snek.forEach((snekPart) => {
+          ctx.fillRect(snekPart.x, snekPart.y, unitSize, unitSize);
+          ctx.strokeRect(snekPart.x, snekPart.y, unitSize, unitSize);
+        });
+      }
+      function changeDirection(event) {
+        const keyPressed = event.keyCode;
+        const LEFT = 37;
+        const RIGHT = 39;
+        const UP = 38;
+        const DOWN = 40;
+        const goingUP = yVelocity == -unitSize;
+        const goingDOWN = yVelocity == unitSize;
+        const goingRIGHT = xVelocity == unitSize;
+        const goingLEFT = xVelocity == -unitSize;
+        switch (true) {
+          case keyPressed == LEFT && !goingRIGHT:
+            xVelocity = -unitSize;
+            yVelocity = 0;
+            break;
+          case keyPressed == UP && !goingDOWN:
+            xVelocity = 0;
+            yVelocity = -unitSize;
+            break;
+          case keyPressed == RIGHT && !goingLEFT:
             xVelocity = unitSize;
             yVelocity = 0;
-            snek = [
-                {x:unitSize * 4, y:0},
-                {x:unitSize * 3, y:0},
-                {x:unitSize * 2, y:0},
-                {x:unitSize, y:0},
-                {x:0, y:0}
-            ]
-            gameStart();
-        };</script>
-</body>
+            break;
+          case keyPressed == DOWN && !goingUP:
+            xVelocity = 0;
+            yVelocity = unitSize;
+            break;
+        }
+      }
+      function checkGameOver() {
+        switch (true) {
+          case snek[0].x < 0:
+            running = false;
+            break;
+          case snek[0].x >= gameWidth:
+            running = false;
+            break;
+          case snek[0].y < 0:
+            running = false;
+            break;
+          case snek[0].y >= gameWidth:
+            running = false;
+            break;
+        }
+        for (let i = 1; i < snek.length; i += 1) {
+          if (snek[i].x == snek[0].x && snek[i].y == snek[0].y) {
+            running = false;
+          }
+        }
+      }
+      function displayGameOver() {
+        ctx.font = "50px MV Boli";
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
+        running = false;
+      }
+      function resetGame() {
+        score = 0;
+        xVelocity = unitSize;
+        yVelocity = 0;
+        snek = [
+          { x: unitSize * 4, y: 0 },
+          { x: unitSize * 3, y: 0 },
+          { x: unitSize * 2, y: 0 },
+          { x: unitSize, y: 0 },
+          { x: 0, y: 0 },
+        ];
+        gameStart();
+      }
+    </script>
+  </body>
 </html>

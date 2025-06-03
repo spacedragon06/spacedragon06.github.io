@@ -1,9 +1,24 @@
 let grass = 0;
+let grassPerSecond = 0;
+
+function shortenValue(x) {
+  if (x / 1000 >= 1 && x / 1000 < 1000) {
+    return x / 1000 + "K";
+  } else if (x / 10 ** 6 >= 1 && x / 10 ** 6 < 1000) {
+    return x / 10 ** 6 + "M";
+  } else if (x / 10 ** 9 >= 1 && x / 10 ** 9 < 1000) {
+    return x / 10 ** 9 + "B";
+  } else if (x / 10 ** 12 >= 1) {
+    return x / 10 ** 12 + "T";
+  } else {
+    return x;
+  }
+}
 
 class ItemEntry {
   constructor(item, name, desc, type) {
     let container = document.createElement("md-list-item");
-    container.setAttribute("onclick", `buyItem(${item})");`);
+    container.setAttribute("onclick", `buyItem(${item});`);
 
     let headline = document.createElement("div");
     headline.setAttribute("slot", "headline");
@@ -37,15 +52,19 @@ class Item {
     this.name = name;
     this.type = type;
     if (this.type == "special") {
-      this.desc = desc + " | price " + this.price;
+      this.desc = desc + " | price " + shortenValue(this.price);
     } else {
-      this.desc = this.grass + " grass per second" + " | price " + this.price;
+      this.desc =
+        this.grass +
+        " grass per second" +
+        " | price " +
+        shortenValue(this.price);
     }
     this.entry = new ItemEntry(
       "items." + item,
       this.name,
       this.desc,
-      this.type,
+      this.type
     );
     this.handler = handler;
   }
@@ -61,17 +80,17 @@ let items = {
     "normal",
     "grassfield",
     "",
-    "",
+    ""
   ),
   cloudseeder: new Item(
     0,
     4000,
-    2,
+    25,
     "Cloud Seeder",
-    "special",
+    "normal",
     "cloudseeder",
-    "buyCloudSeeder()",
-    "Increase grass produced by Grass Field",
+    "",
+    ""
   ),
   grassfarm: new Item(
     0,
@@ -81,17 +100,7 @@ let items = {
     "normal",
     "grassfarm",
     "",
-    "",
-  ),
-  artificialisland: new Item(
-    0,
-    1000000,
-    10,
-    "Artificial Island",
-    "special",
-    "artificialisland",
-    "buyArtificialIsland()",
-    "Increase grass produced by Grass Farm",
+    ""
   ),
 };
 
@@ -107,6 +116,7 @@ function buyItem(item) {
       eval(item.handler);
     }
     refreshGrass();
+    setGrassPerSecond();
   }
 }
 
@@ -126,7 +136,20 @@ function touchGrass() {
 
 function refreshGrass() {
   scoreTxt.innerHTML = grass;
+  cps.innerHTML = grassPerSecond;
 }
+
+function setGrassPerSecond() {
+  let item;
+  let g = 0;
+  for (i = 0; i < Object.keys(items).length; i++) {
+    item = items[Object.keys(items)[i]];
+    g += item.grass * item.amount;
+  }
+  grassPerSecond = g;
+}
+
+function checkMilestone() {}
 
 function buyCloudSeeder() {
   parsed = items.grassfield.entry.desc.innerHTML.split(" ");
@@ -142,40 +165,45 @@ function refreshScreenOrientation() {
   }
 }
 function setMode() {
-  if (
+  /*if (
     window.matchMedia &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
   ) {
     document.body.classlist.add("dark");
     document.getElementById("darkmode").selected = true;
-  }
+  }*/
 }
 function updateMode() {
-  if (document.getElementById("darkmode").selected == false) {
+  if (document.getElementById("darkmode").selected == true) {
     document.body.classList.replace("dark", "light");
   }
-  if (document.getElementById("darkmode").selected == true) {
+  if (document.getElementById("darkmode").selected == false) {
     document.body.classList.replace("light", "dark");
   }
 }
 function saveAll() {
   localStorage.setItem("grass", grass);
-  localStorage.setItem("items", items);
+  let itemsS = JSON.stringify(items);
+  localStorage.setItem("items", itemsS);
 }
 function loadAll() {
   grass = Number(localStorage.getItem("grass"));
-  items = Object(localStorage.getItem("items"));
+  itemsD = Object(localStorage.getItem("items"));
+  items = JSON.parse(itemsD);
+  let item;
   for (i = 0; i < Object.keys(items).length; i++) {
     item = items[Object.keys(items)[i]];
-    item.entry.amount = item.amount;
+    item.entry.amount.innerHTML = item.amount;
   }
   refreshGrass();
+  setGrassPerSecond();
 }
 function resetSave() {
   localStorage.clear();
 }
 
-window.addEventListener("DOMContentLoaded", function () {
+function main() {
+  cps = document.getElementById("cps");
   scoreTxt = document.createElement("div");
   scoreTxt.style.alignSelf = "center";
   scoreTxt.style.flex = 1;
@@ -186,10 +214,11 @@ window.addEventListener("DOMContentLoaded", function () {
 
   refreshScreenOrientation();
   screen.orientation.onchange = "refreshScreenOrientation();";
-  updateMode();
-  document.getElementById("darkmode").addEventListener("change", updateMode());
+  //updateMode();
+  //document.getElementById("darkmode").addEventListener("change", updateMode());
   setInterval(function () {
     grass = incrementGrass(grass);
     refreshGrass();
   }, 1000);
-});
+}
+main();

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    let flyt = `data:image/bmp;base64,Qk3yAQAAAAAAAIoAAAB8AAAACQAAAAoAAAABACAAAwAAAGgBAACuGwAArhsAAAAAAAAAAAAAAAD/
+    AAD/AAD/AAAAAAAA/0JHUnOdmPUoQ+IeFR6F6wEzMzMTZmZmJmZmZgaZmZkJTODWAxqGjzIAAAAA
+    AAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAzNDRAM7R0wDY29sA0dHRAMrJyQDa29sA4OLiANvd3gDa
+    3N0AzdDSAM/S0wna3N0w29rcE9fT2hf///8F4uTkGNja2wbY2tsAxsrLAMjMzR/Mz8/Oq66qzouR
+    g9DBxMGe19nauMPHyB7Dx8gAuL7AAM/U1gixt7mzeoR7/0NXQ/+XnJj/xMrMq77Fxwa2vb4AxMjH
+    AIGMkgCFkJdTUV5g+DBANv9fa232maSqTpSfpACYnZoAtrm2AMvNyQV7gIIjQE5FwzpaSP9CUUmu
+    d31/IbW4tBWzt7cCsrWyALC0sQji3NwIVmJYikZhVv9ebGFwAAAAAK+yrwatsbABs7azAKmtqQC0
+    uLELZGx5NkpRXX5scns0oqahDZ+inwCqr60A0dbWAKi0xwCssa8H////AAAAAAD//+4BnaKgCq64
+    vQC/xccA0dbWAKm+6ACtsbAArbKvAKKqsACdoZ4AnaGeAIBuTQC+xMUA`;
+    const resolutions = {
+      svga: [800, 600],
+      xga: [1024, 768],
+      sxga: [1280, 960],
+      wsvga: [1024, 576],
+      hd: [1280, 720],
+      wxga: [1366, 768],
+      fhd: [1920, 1080],
+    };
+    let resolution = resolutions.wxga;
+    let tilesize = 20;
+    let tiles = [
+      Math.floor(resolution[0] / tilesize),
+      Math.floor(resolution[1] / tilesize),
+    ];
+    let playersize = tilesize / 2;
+    let queue = [false, false, false, false];
+    let Walls = [
+      //x  y  x  y
+      [1, 1, 2, 1],
+      [1, 1, 1, 2],
+      [1, 2, 1, 3],
+      [1, 3, 2, 3],
+      [2, 3, 3, 3],
+    ];
+    let player;
+    let fly;
+    let moves = 0;
+
+    class Player {
+      constructor(x, y, size, ctx) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.ctx = ctx;
+      }
+
+      draw(ctx) {
+        ctx.fillRect(
+          this.x - this.size / 2,
+          this.y - this.size / 2,
+          this.size,
+          this.size
+        );
+      }
+      clear(ctx) {
+        ctx.clearRect(
+          this.x - this.size / 2,
+          this.y - this.size / 2,
+          this.size,
+          this.size
+        );
+      }
+    }
+
+    class Fly {
+      constructor(c) {
+        this.x = randRange(tiles[0]) * tilesize + 10;
+        this.y = randRange(tiles[1]) * tilesize + 10;
+        this.found = false;
+        this.texture = new Image(10, 10);
+        this.texture.src = flyt;
+        this.texture.onload = () => {
+          c.drawImage(this.texture, this.x - 5, this.y - 5);
+        };
+        console.log(`fly position: ${this.x},${this.y}`);
+      }
+      check(player, c) {
+        if (player.x == this.x && player.y == this.y) {
+          this.found = true;
+          c.fillText("Fly found", 40, 80, 200);
+          console.log(`Moves: ${moves}`);
+        }
+      }
+      draw(c) {
+        /* c.fillStyle = "#00ff00";
+            c.fillRect(this.x - 5, this.y - 5, 10, 10);
+            c.fillStyle = "#000000"; */
+        c.drawImage(this.texture, this.x - 5, this.y - 5);
+      }
+    }
+
+    function setResolution(canvas) {
+      canvas.setAttribute("width", `${resolution[0]}`);
+      canvas.setAttribute("height", `${resolution[1]}`);
+    }
+
+    function randBool() {
+      if (Math.round(Math.random()) == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    function randRange(x) {
+      return Math.floor((Math.random() * 100) % x);
+    }
+
+    function gridPattern(c) {
+      for (i = 1; i < tiles[1]; i++) {
+        for (j = 1; j < tiles[0]; j++) {
+          c.beginPath();
+          c.moveTo(j * tilesize - tilesize, i * tilesize);
+          c.lineTo(j * tilesize, i * tilesize);
+          c.stroke();
+        }
+      }
+      for (i = 1; i < tiles[1]; i++) {
+        for (j = 0; j < tiles[0]; j++) {
+          c.beginPath();
+          c.moveTo(j * tilesize, i * tilesize - tilesize);
+          c.lineTo(j * tilesize, i * tilesize);
+          c.stroke();
+        }
+      }
+    }
+
+    function checkQueueEmpty() {
+      if (
+        queue[0] == false &&
+        queue[1] == false &&
+        queue[2] == false &&
+        queue[3] == false
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function drawWalls(c) {
+      for (i = 0; i < Walls.length; i++) {
+        c.beginPath();
+        c.moveTo(Walls[i][0], Walls[i][1]);
+        c.lineTo(Walls[i][2], Walls[i][3]);
+        c.stroke();
+      }
+    }
+
+    function generateWalls() {
+      let a;
+      let d;
+      let iterations = (tiles[0] * tiles[1]) / 2;
+      for (i = 0; i < iterations; i++) {
+        a = [randRange(tiles[0]), randRange(tiles[1]), 0, 0];
+        d = randRange(3);
+        switch (d) {
+          case 0:
+            a[2] = a[0];
+            a[3] = a[1] + 1;
+            break;
+          case 1:
+            a[2] = a[0];
+            a[3] = a[1] - 1;
+            break;
+          case 2:
+            a[3] = a[1];
+            a[2] = a[0] + 1;
+            break;
+          case 0:
+            a[3] = a[1];
+            a[2] = a[0] - 1;
+            break;
+
+          default:
+            break;
+        }
+        Walls.push(a);
+      }
+      for (i = 0; i < Walls.length; i++) {
+        for (j = 0; j < 4; j++) {
+          Walls[i][j] = Walls[i][j] * tilesize;
+        }
+      }
+      Walls.sort();
+    }
+
+    function checkHCollision(player) {
+      for (i = 0; i < Walls.length; i++) {
+        /* console.log(
+              `i=${i}, player = ${player.x},${player.y}, ${
+                player.y + 5 == Walls[i][1]
+              } && ${Walls[i][0] <= player.x} && ${player.x <= Walls[i][2]} = ${
+                player.y + 5 == Walls[i][1] &&
+                Walls[i][0] <= player.x &&
+                player.x <= Walls[i][2]
+              }`
+            ); */
+        if (
+          player.y - 5 == Walls[i][1] &&
+          Walls[i][0] <= player.x &&
+          player.x <= Walls[i][2]
+        ) {
+          // console.log(i);
+          queue[2] = false;
+        } else if (
+          player.y + 5 == Walls[i][1] &&
+          Walls[i][0] <= player.x &&
+          player.x <= Walls[i][2]
+        ) {
+          // console.log(i);
+          queue[3] = false;
+        }
+      }
+    }
+    function checkVCollision(player) {
+      for (i = 0; i < Walls.length; i++) {
+        if (
+          player.x - 5 == Walls[i][0] &&
+          Walls[i][3] >= player.y &&
+          player.y >= Walls[i][1]
+        ) {
+          // console.log(i);
+          queue[0] = false;
+        } else if (
+          player.x + 5 == Walls[i][0] &&
+          Walls[i][3] >= player.y &&
+          player.y >= Walls[i][1]
+        ) {
+          // console.log(i);
+          queue[1] = false;
+        }
+      }
+    }
+    function checkCollision(p) {
+      checkHCollision(p);
+      checkVCollision(p);
+    }
+
+    window.onload = function () {
+      addEventListener("keydown", function (e) {
+        if (e.code == "ArrowLeft") {
+          queue[0] = true;
+        }
+        if (e.code == "ArrowRight") {
+          queue[1] = true;
+        }
+        if (e.code == "ArrowUp") {
+          queue[2] = true;
+        }
+        if (e.code == "ArrowDown") {
+          queue[3] = true;
+        }
+      });
+
+      const canvas = document.getElementById("display");
+      setResolution(canvas);
+      const ctx = canvas.getContext("2d");
+      ctx.strokestyle = "#000000";
+      ctx.font = "50px sans";
+
+      player = new Player(10, 10, playersize, ctx);
+      fly = new Fly(ctx);
+      generateWalls();
+      drawWalls(ctx);
+      player.draw(ctx);
+      fly.draw(ctx);
+
+      window.setInterval(function () {
+        if (!fly.found && !checkQueueEmpty()) {
+          ctx.clearRect(0, 0, resolution[0], resolution[1]);
+          checkCollision(player);
+
+          player.clear(ctx);
+          if (queue[0]) {
+            player.x -= 5;
+            queue[0] = false;
+          }
+          if (queue[1]) {
+            player.x += 5;
+            queue[1] = false;
+          }
+          if (queue[2]) {
+            player.y -= 5;
+            queue[2] = false;
+          }
+          if (queue[3]) {
+            player.y += 5;
+            queue[3] = false;
+          }
+          moves++;
+          drawWalls(ctx);
+          fly.draw(ctx);
+          player.draw(ctx);
+          fly.check(player, ctx);
+        }
+      }, 16);
+    };
+
+    function reset() {
+      ctx.reset();
+      i = 0;
+    }
+  </script>
+</html>
+<body>
+  <canvas id="display" style="border: 1px solid"></canvas>
+</body>

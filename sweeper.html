@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    @font-face {
+      font-family: "terminus";
+      src: url("data:font/woff2;base64,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");
+    }
+    body {
+      font-family: "Courier New", Courier, monospace;
+    }
+  </style>
+  <script>
+    let flagt = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
+AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8AAAAAAAAA
+AP//////////////////AAAAAP///////////////////////wAA/////////////////////wD4
+AAD///////////////8A+AD4APgAAP////////////8A+AD4APgA+AAA////////////////APgA
++AD4AAD/////////////////////APgAAP////////////////////////////////////8=`;
+    let minet = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
+AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8QhP//EIT/
+/xCE////////EIQQhAAAAAAQhAAAAAAQhP///////wAAEIQAAAAAAAAQhAAA/////xCEAAAAAAAA
+EIQAAAAAAAAQhP////8QhAAAAAAAAAAAEIQAAP////8QhAAAAAAQhAAAAAAAAAAAEIT/////EIQA
+AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
+    const resolutions = {
+      vga: [640, 480],
+      svga: [800, 600],
+      xga: [1024, 768],
+      sxga: [1280, 960],
+      wsvga: [1024, 576],
+      hd: [1280, 720],
+      wxga: [1366, 768],
+      fhd: [1920, 1080],
+    };
+    let resolution = resolutions.vga;
+    let tilesize = 20;
+    let tiles = [
+      Math.floor(resolution[0] / tilesize),
+      Math.floor(resolution[1] / tilesize),
+    ];
+    let moves = 0;
+    let minesAmount = 50;
+    let flagAmount = 60;
+    let minesFound = 0;
+
+    function setResolution(canvas) {
+      canvas.setAttribute("width", `${resolution[0]}`);
+      canvas.setAttribute("height", `${resolution[1]}`);
+    }
+
+    function randBool() {
+      if (Math.round(Math.random()) == 0) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    function randRange(x) {
+      return Math.floor((Math.random() * 100) % x);
+    }
+
+    function gridPattern(c) {
+      for (i = 1; i < tiles[1] + 1; i++) {
+        for (j = 1; j < tiles[0] + 1; j++) {
+          c.beginPath();
+          c.moveTo(j * tilesize - tilesize, i * tilesize);
+          c.lineTo(j * tilesize, i * tilesize);
+          c.stroke();
+        }
+      }
+      for (i = 1; i < tiles[1] + 1; i++) {
+        for (j = 0; j < tiles[0] + 1; j++) {
+          c.beginPath();
+          c.moveTo(j * tilesize, i * tilesize - tilesize);
+          c.lineTo(j * tilesize, i * tilesize);
+          c.stroke();
+        }
+      }
+    }
+
+    function fillSq(c, x, y) {
+      c.fillRect(x * tilesize, y * tilesize, tilesize, tilesize);
+    }
+
+    function checkMines(x, y) {
+      for (i = 0; i < minesAmount; i++) {
+        if (x == mines[i][0] && y == mines[i][1]) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function checkSurroundingSquares(x, y) {
+      let n = 0;
+      n += checkMines(x + 1, y);
+      n += checkMines(x + 1, y + 1);
+      n += checkMines(x, y + 1);
+      n += checkMines(x - 1, y + 1);
+      n += checkMines(x - 1, y);
+      n += checkMines(x - 1, y - 1);
+      n += checkMines(x, y - 1);
+      n += checkMines(x + 1, y - 1);
+      return n;
+    }
+
+    function fillMineText(x, y) {
+      let xp = x * tilesize;
+      let yp = y * tilesize;
+      n = checkSurroundingSquares(x, y);
+      ctx.clearRect(x * tilesize, y * tilesize, tilesize, tilesize);
+      if (n != 0 && !checkMines(x, y)) {
+        ctx.fillText(n, xp + 5, yp + 15);
+      }
+    }
+
+    function revealArea() {
+      for (i = -2; i < 3; i++) {
+        for (j = -2; j < 3; j++) {
+          fillMineText(i, j);
+        }
+      }
+    }
+
+    let mines = [];
+
+    console.log(mines);
+
+    function drawFlag(c, x, y) {
+      c.drawImage(
+        ftexture,
+        0,
+        0,
+        10,
+        10,
+        x * tilesize,
+        y * tilesize,
+        tilesize,
+        tilesize
+      );
+      flagAmount--;
+      if (checkMines(x, y)) {
+        minesFound++;
+      }
+      document.getElementById("minecount").innerHTML = minesAmount;
+      document.getElementById("flagcount").innerHTML = flagAmount;
+    }
+    let ctx;
+    let ftexture;
+    let mtexture;
+    window.onload = function () {
+      const canvas = document.getElementById("display");
+      setResolution(canvas);
+      ctx = canvas.getContext("2d");
+      ctx.strokeStyle = "#000000ff";
+      ctx.font = `${tilesize}px terminus`;
+      ctx.fillText(0, -20, -20);
+      ftexture = new Image(10, 10);
+      ftexture.src = flagt;
+      mtexture = new Image(10, 10);
+      mtexture.src = minet;
+      for (i = 0; i < minesAmount; i++) {
+        mines.push([randRange(tiles[0] - 1), randRange(tiles[1] - 1)]);
+        /* ctx.fillStyle = "#0000ff";
+        fillSq(ctx, mines[i][0], mines[i][1]);
+        ctx.fillStyle = "#000000"; */
+      }
+
+      document.getElementById("minecount").innerHTML = minesAmount;
+      document.getElementById("flagcount").innerHTML = flagAmount;
+
+      canvas.onmousedown = (e) => {
+        x = Math.floor(e.offsetX / 20);
+        y = Math.floor(e.offsetY / 20);
+        switch (e.button) {
+          case 0:
+            //fillSq(ctx, x, y);
+            if (checkMines(x, y)) {
+              ctx.fillStyle = "#ff0000";
+              fillSq(ctx, x, y);
+              ctx.fillStyle = "#000000";
+              ctx.font = "50px sans";
+              ctx.fillText("Game Over", 50, 50);
+              document.getElementById(
+                "minesfound"
+              ).innerHTML = `Mines found: ${minesFound}`;
+              canvas.onmousedown = null;
+            } else {
+              fillMineText(x, y);
+            }
+            break;
+
+          case 1:
+            console.log([x, y]);
+            break;
+
+          case 2:
+            drawFlag(ctx, x, y);
+            break;
+
+          default:
+            break;
+        }
+        if (minesAmount == minesFound) {
+          ctx.font = "50px sans";
+          ctx.fillText("You Win", 50, 50);
+          canvas.onmousedown = null;
+        }
+        gridPattern(ctx);
+      };
+      ctx.fillStyle = "#777777ff";
+      ctx.fillRect(0, 0, resolution[0], resolution[1]);
+      ctx.fillStyle = "#000000ff";
+      gridPattern(ctx);
+
+      /* window.setInterval(function () {}, 16);*/
+    };
+
+    function reset() {
+      ctx.reset();
+      i = 0;
+    }
+  </script>
+</html>
+<body>
+  <canvas
+    id="display"
+    style="border: 1px solid"
+    oncontextmenu="return false;"
+  ></canvas>
+  <div>
+    Mines: <span id="minecount"></span> Flags: <span id="flagcount"></span>
+    <span id="minesfound"></span>
+  </div>
+</body>

@@ -10,19 +10,20 @@
     }
   </style>
   <script>
-    let flagt = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
+    let flagt = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAATCwAAEwsAAAAAAAAAAAAAAPgA
 AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8AAAAAAAAA
-AP//////////////////AAAAAP///////////////////////wAA/////////////////////wD4
-AAD///////////////8A+AD4APgAAP////////////8A+AD4APgA+AAA////////////////APgA
-+AD4AAD/////////////////////APgAAP////////////////////////////////////8=`;
+AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAA/////wAAAAAAAAAAAAAA
+AAAAAAD//////////wAAAAAAAAAA/////////////////////wAA/////////////////////wCo
+AKj///////////////8AqACoAKgAqP////////////8AqACoAKgAqACo////////////////AKgA
+qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
     let minet = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
-AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8QhP//EIT/
-/xCE////////EIQQhAAAAAAQhAAAAAAQhP///////wAAEIQAAAAAAAAQhAAA/////xCEAAAAAAAA
-EIQAAAAAAAAQhP////8QhAAAAAAAAAAAEIQAAP////8QhAAAAAAQhAAAAAAAAAAAEIT/////EIQA
-AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
+    AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8QhP//EIT/
+    /xCE////////EIQQhAAAAAAQhAAAAAAQhP///////wAAEIQAAAAAAAAQhAAA/////xCEAAAAAAAA
+    EIQAAAAAAAAQhP////8QhAAAAAAAAAAAEIQAAP////8QhAAAAAAQhAAAAAAAAAAAEIT/////EIQA
+    AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
     const resolutions = {
+      hvga: [320, 240],
       vga: [640, 480],
       svga: [800, 600],
       xga: [1024, 768],
@@ -32,16 +33,20 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
       wxga: [1366, 768],
       fhd: [1920, 1080],
     };
-    let resolution = resolutions.vga;
+    let resolution = resolutions.svga;
     let tilesize = 20;
     let tiles = [
       Math.floor(resolution[0] / tilesize),
       Math.floor(resolution[1] / tilesize),
     ];
+    let totalTiles = tiles[0] * tiles[1];
     let moves = 0;
-    let minesAmount = 50;
-    let flagAmount = 60;
+    let minesPercent = 12.5;
+    let minesAmount = Math.round((totalTiles / 100) * minesPercent);
+    let flagAmount = minesAmount + Math.round(minesAmount / 10);
     let minesFound = 0;
+    let mines = [];
+    let flags = [];
 
     function setResolution(canvas) {
       canvas.setAttribute("width", `${resolution[0]}`);
@@ -58,6 +63,14 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
 
     function randRange(x) {
       return Math.floor((Math.random() * 100) % x);
+    }
+
+    function padNumber(x) {
+      if (x < 10) {
+        return "0" + x;
+      } else {
+        return x;
+      }
     }
 
     function gridPattern(c) {
@@ -91,6 +104,14 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
       }
       return false;
     }
+    function checkFlags(x, y) {
+      for (i = 0; i < flags.length; i++) {
+        if (x == flags[i][0] && y == flags[i][1]) {
+          return true;
+        }
+      }
+      return false;
+    }
 
     function checkSurroundingSquares(x, y) {
       let n = 0;
@@ -109,23 +130,66 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
       let xp = x * tilesize;
       let yp = y * tilesize;
       n = checkSurroundingSquares(x, y);
-      ctx.clearRect(x * tilesize, y * tilesize, tilesize, tilesize);
-      if (n != 0 && !checkMines(x, y)) {
-        ctx.fillText(n, xp + 5, yp + 15);
+      if (!checkFlags(x, y) || !checkMines(x, y)) {
+        ctx.clearRect(x * tilesize, y * tilesize, tilesize, tilesize);
       }
+      switch (n) {
+        case 1:
+          ctx.fillStyle = "#0000aaff";
+          break;
+
+        case 2:
+          ctx.fillStyle = "#005200ff";
+          break;
+        case 3:
+          ctx.fillStyle = "#aa0000ff";
+          break;
+        case 4:
+          ctx.fillStyle = "#000052ff";
+          break;
+        case 5:
+          ctx.fillStyle = "#520000ff";
+          break;
+        case 6:
+          ctx.fillStyle = "#005252ff";
+          break;
+        case 7:
+          ctx.fillStyle = "#000000ff";
+          break;
+        case 8:
+          ctx.fillStyle = "#525252ff";
+        default:
+          break;
+      }
+      if (n != 0 && !checkMines(x, y)) {
+        ctx.fillText(n, xp + 4, yp + 17);
+      }
+      ctx.fillStyle = "#000000ff";
     }
 
-    function revealArea() {
-      for (i = -2; i < 3; i++) {
-        for (j = -2; j < 3; j++) {
-          fillMineText(i, j);
+    function revealArea(x, y) {
+      for (let i = -2; i < 3; i++) {
+        for (let j = -2; j < 3; j++) {
+          fillMineText(i + x, j + y);
         }
       }
     }
 
-    let mines = [];
+    //console.log(mines);
 
-    console.log(mines);
+    function drawMine(x, y) {
+      ctx.drawImage(
+        mtexture,
+        0,
+        0,
+        10,
+        10,
+        x * tilesize,
+        y * tilesize,
+        tilesize,
+        tilesize
+      );
+    }
 
     function drawFlag(c, x, y) {
       c.drawImage(
@@ -143,16 +207,19 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
       if (checkMines(x, y)) {
         minesFound++;
       }
+      flags.push([x, y]);
       document.getElementById("minecount").innerHTML = minesAmount;
       document.getElementById("flagcount").innerHTML = flagAmount;
     }
     let ctx;
+    let canvas;
     let ftexture;
     let mtexture;
     window.onload = function () {
-      const canvas = document.getElementById("display");
+      canvas = document.getElementById("display");
       setResolution(canvas);
       ctx = canvas.getContext("2d");
+      ctx.imageSmoothingEnabled = false;
       ctx.strokeStyle = "#000000ff";
       ctx.font = `${tilesize}px terminus`;
       ctx.fillText(0, -20, -20);
@@ -163,16 +230,16 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
       for (i = 0; i < minesAmount; i++) {
         mines.push([randRange(tiles[0] - 1), randRange(tiles[1] - 1)]);
         /* ctx.fillStyle = "#0000ff";
-        fillSq(ctx, mines[i][0], mines[i][1]);
-        ctx.fillStyle = "#000000"; */
+            fillSq(ctx, mines[i][0], mines[i][1]);
+            ctx.fillStyle = "#000000"; */
       }
 
       document.getElementById("minecount").innerHTML = minesAmount;
       document.getElementById("flagcount").innerHTML = flagAmount;
 
       canvas.onmousedown = (e) => {
-        x = Math.floor(e.offsetX / 20);
-        y = Math.floor(e.offsetY / 20);
+        x = Math.floor(e.offsetX / tilesize);
+        y = Math.floor(e.offsetY / tilesize);
         switch (e.button) {
           case 0:
             //fillSq(ctx, x, y);
@@ -180,6 +247,26 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
               ctx.fillStyle = "#ff0000";
               fillSq(ctx, x, y);
               ctx.fillStyle = "#000000";
+              drawMine(x, y);
+              for (let i = 0; i < mines.length; i++) {
+                drawMine(mines[i][0], mines[i][1]);
+              }
+              let d = new Date();
+              let elem = document.createElement("a");
+              elem.setAttribute("href", `${canvas.toDataURL("image/png")}`);
+              elem.setAttribute(
+                "download",
+                `${d.getFullYear()}/${padNumber(d.getMonth() + 1)}/${padNumber(
+                  d.getDate()
+                )}T${padNumber(d.getHours())}:${padNumber(
+                  d.getMinutes()
+                )}:${padNumber(d.getSeconds())}.png`
+              );
+              elem.id = "downloadlink";
+              elem.style = "display: none;";
+              elem.innerText = "download screenshot";
+              document.getElementById("container").appendChild(elem);
+
               ctx.font = "50px sans";
               ctx.fillText("Game Over", 50, 50);
               document.getElementById(
@@ -202,12 +289,17 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
           default:
             break;
         }
-        if (minesAmount == minesFound) {
+        if (minesAmount - 1 == minesFound) {
           ctx.font = "50px sans";
           ctx.fillText("You Win", 50, 50);
           canvas.onmousedown = null;
         }
         gridPattern(ctx);
+      };
+      window.onkeydown = (e) => {
+        if (e.key == "s") {
+          document.getElementById("downloadlink").style = "";
+        }
       };
       ctx.fillStyle = "#777777ff";
       ctx.fillRect(0, 0, resolution[0], resolution[1]);
@@ -229,7 +321,7 @@ AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
     style="border: 1px solid"
     oncontextmenu="return false;"
   ></canvas>
-  <div>
+  <div id="container">
     Mines: <span id="minecount"></span> Flags: <span id="flagcount"></span>
     <span id="minesfound"></span>
   </div>

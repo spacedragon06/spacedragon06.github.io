@@ -8,20 +8,29 @@
     body {
       font-family: "Courier New", Courier, monospace;
     }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-content {
+      position: absolute;
+      width: max-content;
+      font-family: sans-serif;
+    }
   </style>
   <script>
     let flagt = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAATCwAAEwsAAAAAAAAAAAAAAPgA
-AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAA/////wAAAAAAAAAAAAAA
-AAAAAAD//////////wAAAAAAAAAA/////////////////////wAA/////////////////////wCo
-AKj///////////////8AqACoAKgAqP////////////8AqACoAKgAqACo////////////////AKgA
-qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
-    let minet = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
     AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8QhP//EIT/
-    /xCE////////EIQQhAAAAAAQhAAAAAAQhP///////wAAEIQAAAAAAAAQhAAA/////xCEAAAAAAAA
-    EIQAAAAAAAAQhP////8QhAAAAAAAAAAAEIQAAP////8QhAAAAAAQhAAAAAAAAAAAEIT/////EIQA
-    AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
+    AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAA/////wAAAAAAAAAAAAAA
+    AAAAAAD//////////wAAAAAAAAAA/////////////////////wAA/////////////////////wCo
+    AKj///////////////8AqACoAKgAqP////////////8AqACoAKgAqACo////////////////AKgA
+    qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
+    let minet = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
+        AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8QhP//EIT/
+        /xCE////////EIQQhAAAAAAQhAAAAAAQhP///////wAAEIQAAAAAAAAQhAAA/////xCEAAAAAAAA
+        EIQAAAAAAAAQhP////8QhAAAAAAAAAAAEIQAAP////8QhAAAAAAQhAAAAAAAAAAAEIT/////EIQA
+        AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
     const resolutions = {
       hvga: [320, 240],
       vga: [640, 480],
@@ -33,24 +42,62 @@ qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
       wxga: [1366, 768],
       fhd: [1920, 1080],
     };
-    let resolution = resolutions.svga;
-    let tilesize = 20;
-    let tiles = [
-      Math.floor(resolution[0] / tilesize),
-      Math.floor(resolution[1] / tilesize),
-    ];
-    let totalTiles = tiles[0] * tiles[1];
-    let moves = 0;
-    let minesPercent = 12.5;
-    let minesAmount = Math.round((totalTiles / 100) * minesPercent);
-    let flagAmount = minesAmount + Math.round(minesAmount / 10);
-    let minesFound = 0;
+    let resolution;
+    const tilesize = 20;
+    let tiles;
+    let totalTiles;
+    let minesPercent;
+    let minesAmount;
+    let flagAmount;
+    let minesFound;
     let mines = [];
     let flags = [];
 
     function setResolution(canvas) {
       canvas.setAttribute("width", `${resolution[0]}`);
       canvas.setAttribute("height", `${resolution[1]}`);
+    }
+
+    function setOptions() {
+      let u = new URL(document.URL.split("?")[0]);
+      u.searchParams.append(
+        "minepercent",
+        document.getElementById("minepercent").value
+      );
+      u.searchParams.append("res", document.getElementById("resolution").value);
+      window.location.href = u.href;
+    }
+
+    function initVariables() {
+      let u = new URL(document.URL);
+
+      if (
+        u.searchParams.get("minepercent") == null ||
+        u.searchParams.get("minepercent") == ""
+      ) {
+        minesPercent = 12.5;
+      } else {
+        minesPercent = parseInt(u.searchParams.get("minepercent"));
+      }
+      if (
+        u.searchParams.get("res") == null ||
+        u.searchParams.get("res") == ""
+      ) {
+        resolution = resolutions.svga;
+      } else {
+        eval(`resolution = resolutions.${u.searchParams.get("res")}`);
+        if (resolution == undefined) {
+          resolution = resolutions.svga;
+        }
+      }
+      tiles = [
+        Math.floor(resolution[0] / tilesize),
+        Math.floor(resolution[1] / tilesize),
+      ];
+      totalTiles = tiles[0] * tiles[1];
+      minesAmount = Math.round((totalTiles / 100) * minesPercent);
+      flagAmount = minesAmount + Math.round(minesAmount / 10);
+      minesFound = 0;
     }
 
     function randBool() {
@@ -216,6 +263,7 @@ qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
     let ftexture;
     let mtexture;
     window.onload = function () {
+      initVariables();
       canvas = document.getElementById("display");
       setResolution(canvas);
       ctx = canvas.getContext("2d");
@@ -230,8 +278,8 @@ qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
       for (i = 0; i < minesAmount; i++) {
         mines.push([randRange(tiles[0] - 1), randRange(tiles[1] - 1)]);
         /* ctx.fillStyle = "#0000ff";
-            fillSq(ctx, mines[i][0], mines[i][1]);
-            ctx.fillStyle = "#000000"; */
+                fillSq(ctx, mines[i][0], mines[i][1]);
+                ctx.fillStyle = "#000000"; */
       }
 
       document.getElementById("minecount").innerHTML = minesAmount;
@@ -324,5 +372,26 @@ qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
   <div id="container">
     Mines: <span id="minecount"></span> Flags: <span id="flagcount"></span>
     <span id="minesfound"></span>
+    <div class="dropdown">
+      <button
+        onclick="document.querySelector('.dropdown-content').toggleAttribute('open')"
+      >
+        Settings
+      </button>
+      <dialog class="dropdown-content">
+        <input id="minepercent" type="number" min="1" max="100" />% Mines<br />
+        <select id="resolution">
+          <option value="hvga">320x160</option>
+          <option value="vga">640x480</option>
+          <option value="svga" selected>800x600</option>
+          <option value="xga">1024x768</option>
+          <option value="sxga">1280x960</option>
+          <option value="wsvga">1024x576</option>
+          <option value="hd">1280x720</option>
+          <option value="wxga">1366x768</option>
+          <option value="fhd">1920x1080</option></select
+        ><br /><button onclick="setOptions()">Apply</button>
+      </dialog>
+    </div>
   </div>
 </body>

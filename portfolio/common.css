@@ -6,6 +6,19 @@ body {
   background-repeat: no-repeat;
 }
 
+footer {
+  text-align: end;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  backdrop-filter: blur(4px);
+  background-color: rgba(192, 192, 192, 0.3);
+  border-radius: 12px;
+  padding: 6px;
+  margin: 6px;
+  width: max-content;
+}
+
 .transparent {
   backdrop-filter: blur(4px);
   background-color: rgba(192, 192, 192, 0.3);
@@ -14,6 +27,11 @@ body {
   margin: 6px;
   width: max-content;
   vertical-align: middle;
+}
+
+.vak {
+  text-align: start;
+  width: 33vw;
 }
 
 .container {

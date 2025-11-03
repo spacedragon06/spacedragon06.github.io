@@ -19,18 +19,67 @@
     }
   </style>
   <script>
-    let flagt = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAATCwAAEwsAAAAAAAAAAAAAAPgA
-    AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//8AAAAAAAAAAAAAAAAAAAAA/////wAAAAAAAAAAAAAA
-    AAAAAAD//////////wAAAAAAAAAA/////////////////////wAA/////////////////////wCo
-    AKj///////////////8AqACoAKgAqP////////////8AqACoAKgAqACo////////////////AKgA
-    qACoAKj/////////////////////AKgAqP////////////////////////////////////8=`;
-    let minet = `data:image/bmp;base64,Qk1SAQAAAAAAAIoAAAB8AAAACgAAAAoAAAABABAAAwAAAMgAAAAjLgAAIy4AAAAAAAAAAAAAAPgA
-        AOAHAAAfAAAAAAAAAEJHUnMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA//////////////////////////////////8QhP//EIT/
-        /xCE////////EIQQhAAAAAAQhAAAAAAQhP///////wAAEIQAAAAAAAAQhAAA/////xCEAAAAAAAA
-        EIQAAAAAAAAQhP////8QhAAAAAAAAAAAEIQAAP////8QhAAAAAAQhAAAAAAAAAAAEIT/////EIQA
-        AAAAAAAQhAAAEIT//////////wAAEIQAAAAAAAD/////////////EIT/////EIT///////8=`;
+    let sprites = `data:image/gif;base64,R0lGODlhkABbAPcAAKqqqqqqAKoAqqoAAACqqgCqAAAAqgAAAE0AMDAAMDAATQAAUgAATQAAMAAw
+    aE1/qjBolQBNf2iVqk1/lQBNaABSUn+qqmiVf3+qlQBSAH+qf1VVAFJSAJWVaKqqf6qqlX9oMKqV
+    aH9NAJVoMKp/TWgwAFIAAE0AADAAAGgwMICAgH5+flVVVVJSUqqqqgAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAkABbAAAI/wAPCBxI
+    sKDBgwgTKlzIsKHDhxAPAhA4oKJFiwVNHNDIseDFjwQ/Xsy4saTGkCIroky5UmRLkANTqiTYsaPA
+    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
+    `;
     const resolutions = {
       hvga: [320, 240],
       vga: [640, 480],
@@ -43,7 +92,7 @@
       fhd: [1920, 1080],
     };
     let resolution;
-    const tilesize = 20;
+    const tilesize = 32;
     let tiles;
     let totalTiles;
     let minesPercent;
@@ -176,40 +225,44 @@
     function fillMineText(x, y) {
       let xp = x * tilesize;
       let yp = y * tilesize;
+      let imageoffset = 0;
       n = checkSurroundingSquares(x, y);
       if (!checkFlags(x, y) || !checkMines(x, y)) {
         ctx.clearRect(x * tilesize, y * tilesize, tilesize, tilesize);
       }
       switch (n) {
+        case 0:
+          imageoffset = 0;
+          break;
         case 1:
-          ctx.fillStyle = "#0000aaff";
+          imageoffset = 16;
           break;
 
         case 2:
-          ctx.fillStyle = "#005200ff";
+          imageoffset = 32;
           break;
         case 3:
-          ctx.fillStyle = "#aa0000ff";
+          imageoffset = 48;
           break;
         case 4:
-          ctx.fillStyle = "#000052ff";
+          imageoffset = 64;
           break;
         case 5:
-          ctx.fillStyle = "#520000ff";
+          imageoffset = 80;
           break;
         case 6:
-          ctx.fillStyle = "#005252ff";
+          imageoffset = 96;
           break;
         case 7:
-          ctx.fillStyle = "#000000ff";
+          imageoffset = 112;
           break;
         case 8:
-          ctx.fillStyle = "#525252ff";
+          imageoffset = 128;
         default:
           break;
       }
-      if (n != 0 && !checkMines(x, y)) {
-        ctx.fillText(n, xp + 4, yp + 17);
+      if (!checkMines(x, y)) {
+        ctx.drawImage(stexture, imageoffset, 23, 16, 16, xp, yp, 32, 32);
       }
       ctx.fillStyle = "#000000ff";
     }
@@ -222,15 +275,49 @@
       }
     }
 
+    function drawBoard(texture, ctx) {
+      for (let i = 0; i < tiles[0]; i++) {
+        for (let j = 0; j < tiles[1]; j++) {
+          ctx.drawImage(
+            texture,
+            0,
+            39,
+            16,
+            16,
+            i * tilesize,
+            j * tilesize,
+            tilesize,
+            tilesize
+          );
+        }
+      }
+    }
+
     //console.log(mines);
 
-    function drawMine(x, y) {
+    function drawMine(x, y, s) {
+      let imageoffset;
+      switch (s) {
+        case 0:
+          imageoffset = 32;
+          break;
+        case 1:
+          imageoffset = 48;
+          break;
+        case 2:
+          imageoffset = 64;
+          break;
+
+        default:
+          break;
+      }
+
       ctx.drawImage(
-        mtexture,
-        0,
-        0,
-        10,
-        10,
+        stexture,
+        imageoffset,
+        39,
+        16,
+        16,
         x * tilesize,
         y * tilesize,
         tilesize,
@@ -240,11 +327,11 @@
 
     function drawFlag(c, x, y) {
       c.drawImage(
-        ftexture,
-        0,
-        0,
-        10,
-        10,
+        stexture,
+        16,
+        39,
+        16,
+        16,
         x * tilesize,
         y * tilesize,
         tilesize,
@@ -258,10 +345,8 @@
       document.getElementById("minecount").innerHTML = minesAmount;
       document.getElementById("flagcount").innerHTML = flagAmount;
     }
-    let ctx;
-    let canvas;
-    let ftexture;
-    let mtexture;
+    let stexture;
+    let boardDrawn;
     window.onload = function () {
       initVariables();
       canvas = document.getElementById("display");
@@ -271,23 +356,26 @@
       ctx.strokeStyle = "#000000ff";
       ctx.font = `${tilesize}px terminus`;
       ctx.fillText(0, -20, -20);
-      ftexture = new Image(10, 10);
-      ftexture.src = flagt;
-      mtexture = new Image(10, 10);
-      mtexture.src = minet;
+      stexture = new Image(144, 91);
+      stexture.src = sprites;
+      drawBoard(stexture, ctx);
+
       for (i = 0; i < minesAmount; i++) {
         mines.push([randRange(tiles[0] - 1), randRange(tiles[1] - 1)]);
         /* ctx.fillStyle = "#0000ff";
-                fillSq(ctx, mines[i][0], mines[i][1]);
-                ctx.fillStyle = "#000000"; */
+                    fillSq(ctx, mines[i][0], mines[i][1]);
+                    ctx.fillStyle = "#000000"; */
       }
 
       document.getElementById("minecount").innerHTML = minesAmount;
       document.getElementById("flagcount").innerHTML = flagAmount;
-
       canvas.onmousedown = (e) => {
         x = Math.floor(e.offsetX / tilesize);
         y = Math.floor(e.offsetY / tilesize);
+        if (!boardDrawn) {
+          drawBoard(stexture, ctx);
+          boardDrawn = true;
+        }
         switch (e.button) {
           case 0:
             //fillSq(ctx, x, y);
@@ -295,9 +383,9 @@
               ctx.fillStyle = "#ff0000";
               fillSq(ctx, x, y);
               ctx.fillStyle = "#000000";
-              drawMine(x, y);
+              drawMine(x, y, 0);
               for (let i = 0; i < mines.length; i++) {
-                drawMine(mines[i][0], mines[i][1]);
+                drawMine(mines[i][0], mines[i][1], 2);
               }
               let d = new Date();
               let elem = document.createElement("a");
@@ -342,18 +430,18 @@
           ctx.fillText("You Win", 50, 50);
           canvas.onmousedown = null;
         }
-        gridPattern(ctx);
+        //gridPattern(ctx);
       };
       window.onkeydown = (e) => {
         if (e.key == "s") {
           document.getElementById("downloadlink").style = "";
         }
       };
-      ctx.fillStyle = "#777777ff";
+      /* ctx.fillStyle = "#777777ff";
       ctx.fillRect(0, 0, resolution[0], resolution[1]);
       ctx.fillStyle = "#000000ff";
       gridPattern(ctx);
-
+ */
       /* window.setInterval(function () {}, 16);*/
     };
 

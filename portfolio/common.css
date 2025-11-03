@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  background-image: url(./P1210629.jpg);
+  background-image: url(./P1210629.webp);
   background-size: 100vw;
   background-repeat: no-repeat;
 }
@@ -19,6 +19,28 @@ footer {
   width: max-content;
 }
 
+footer span {
+  font-size: x-small;
+}
+
+.vakh3 {
+  margin-top: 6px;
+  margin-bottom: 3px;
+}
+
+.vakh5 {
+  margin-top: 3px;
+  margin-bottom: 6px;
+}
+
+:link {
+  color: aquamarine;
+}
+
+:visited {
+  color: aquamarine;
+}
+
 .transparent {
   backdrop-filter: blur(4px);
   background-color: rgba(192, 192, 192, 0.3);
@@ -32,12 +54,28 @@ footer {
 .vak {
   text-align: start;
   width: 33vw;
+  display: flex;
+  flex-direction: row;
 }
 
 .container {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.grade {
+  width: 5vh;
+  height: 5vh;
+  font-size: xx-large;
+  text-align: center;
+  margin: 1vh;
+  backdrop-filter: blur(4px);
+  background-color: rgba(192, 192, 192, 0.3);
+  border-radius: 12px;
+  padding: 6px;
+  width: max-content;
+  vertical-align: middle;
 }
 
 #title {

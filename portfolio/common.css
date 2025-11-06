@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  background-image: url(./P1210629.webp);
+  background-image: url(./P1210629.avif);
   background-size: 100vw;
   background-repeat: no-repeat;
 }
@@ -21,6 +21,10 @@ footer {
 
 footer span {
   font-size: x-small;
+}
+
+img {
+  width: 320px;
 }
 
 .vakh3 {

@@ -1,7 +1,7 @@
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  background-image: url(./P1210629.avif);
+  background-image: url(./PXL_20251023_132330192.MP.avif);
   background-size: 100vw;
   background-repeat: no-repeat;
 }
@@ -11,12 +11,10 @@ footer {
   position: fixed;
   left: 0;
   bottom: 0;
-  backdrop-filter: blur(4px);
-  background-color: rgba(192, 192, 192, 0.3);
-  border-radius: 12px;
-  padding: 6px;
-  margin: 6px;
-  width: max-content;
+  align-items: end;
+  justify-content: space-between;
+  width: 100vw;
+  display: flex;
 }
 
 footer span {
@@ -25,6 +23,21 @@ footer span {
 
 img {
   width: 320px;
+}
+
+.previous {
+  backdrop-filter: blur(4px);
+  background-color: rgba(192, 192, 192, 0.3);
+  border-radius: 12px;
+  padding: 6px;
+  margin: 6px;
+}
+.next {
+  backdrop-filter: blur(4px);
+  background-color: rgba(192, 192, 192, 0.3);
+  border-radius: 12px;
+  padding: 6px;
+  margin: 6px;
 }
 
 .vakh3 {

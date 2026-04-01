@@ -392,8 +392,8 @@
         let cycles = 0;
         window.setInterval(function () {
           if (cycles != 0) {
-            let choices = ["invisible", "lightsoff", "rtp", "noclip"];
-            globalMod = choices[Math.round(Math.random() * 3)];
+            let choices = ["invisible", "lightsoff", "rtp", "noclip", "speed"];
+            globalMod = choices[Math.round(Math.random() * 4)];
           }
           cycles++;
         }, 20000);
